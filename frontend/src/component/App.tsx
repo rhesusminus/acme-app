@@ -1,11 +1,12 @@
-import React from 'react'
-import { Login } from './'
-import '../style/app.css'
+import React, { FC } from 'react'
+import { Router } from '@reach/router'
+import { Dashboard, Login } from './'
 
-export const App: React.FC = () => {
+export const App: FC = () => {
   return (
-    <div>
-      <Login />
-    </div>
+    <Router>
+      <Login path="/" />
+      <Dashboard path="/dashboard" />
+    </Router>
   )
 }
