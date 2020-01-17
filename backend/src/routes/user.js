@@ -11,28 +11,26 @@ const user = {
   password: 'kissa'
 }
 
-router.post('', async function(req, res) {
-  try {
-    const { username, email, password } = req.body
-    await Joi.validate({ username, email, password }, signUp)
-  } catch (err) {}
+router.get('/test', function(req, res) {
+  res.send(req.session)
 })
 
-router.post('/login', async function(req, res) {
-  console.log(req.body)
+router.post('/login', async function(req, res, next) {
   try {
     const { username, password } = req.body
 
-    if (user && user.password === password) {
+    if (user.password === password && user.username === username) {
       const userSession = sessionizeUser(user)
       req.session.user = userSession
 
-      res.send(userSession)
+      res.status(200).send(userSession)
+
+      return
     }
 
-    throw new Error('Invalid login credentials')
+    res.status(401).send('Invalid username or password')
   } catch (err) {
-    res.status(401).send(parseError(err))
+    return next(err)
   }
 })
 

@@ -1,11 +1,12 @@
+require('dotenv').config()
 const createError = require('http-errors')
 const express = require('express')
 const session = require('express-session')
 const redis = require('redis')
-const redisClient = redis.createClient()
 const redisStore = require('connect-redis')(session)
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const uuid = require('uuid/v4')
 
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
@@ -20,15 +21,21 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(
   session({
-    name: SESS_NAME,
-    secret: SESS_SECRET,
+    genid: req => uuid(),
+    name: process.env.SESSION_NAME,
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
-    store: new redisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
+    store: new redisStore({
+      host: 'localhost',
+      port: process.env.REDIS_PORT,
+      client: redis.createClient(),
+      ttl: 86400
+    }),
     cookie: {
       sameSite: true,
-      secure: NODE_ENV === 'production',
-      maxAge: parseInt(SESS_LIFETIME)
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: parseInt(process.env.SESSION_LIFETIME, 10)
     }
   })
 )
