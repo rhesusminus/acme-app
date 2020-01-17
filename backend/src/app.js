@@ -18,7 +18,6 @@ app.disable('x-powered-by')
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
 app.use(
   session({
     genid: req => uuid(),
