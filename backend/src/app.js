@@ -4,9 +4,9 @@ const express = require('express')
 const session = require('express-session')
 const redis = require('redis')
 const redisStore = require('connect-redis')(session)
-const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const uuid = require('uuid/v4')
+const cors = require('cors')
 
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
@@ -18,6 +18,7 @@ app.disable('x-powered-by')
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 app.use(
   session({
     genid: req => uuid(),
