@@ -22,16 +22,7 @@ const User = t.type({
 type User = t.TypeOf<typeof User>
 
 function login(credentials: Credentials) {
-  return request
-    .post('/user', credentials)
-    .then(response => User.decode(response.data))
-    .then(data =>
-      fold(
-        () => null,
-        d => d
-      )(data)
-    )
-    .catch(err => console.error(err))
+  return request.post('/user', credentials)
 }
 
 function logout() {
@@ -44,7 +35,7 @@ function logout() {
         d => d
       )(data)
     )
-    .catch(err => console.error(err))
+    .catch(err => err)
 }
 
 export { User, login, logout }

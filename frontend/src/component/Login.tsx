@@ -6,19 +6,31 @@ import { Button, Input } from './'
 export const Login: FC<LoginProps> = props => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [isLoading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const user = await login({ username, password })
-    if (user) {
-      props.setUser(user)
-    }
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setLoading(true)
+    login({ username, password })
+      .then(res => {
+        setLoading(false)
+        props.setUser(res.data)
+      })
+      .catch(err => {
+        setLoading(false)
+        setError(err)
+      })
   }
+
+  // props.setUser({ userId: 1, username: 'koira' })
 
   return (
     <div className="bg-red-800 min-h-screen p-2 flex flex-col justify-center items-center">
       <h1 className="text-3xl font-bold pb-4">acme app</h1>
       <form onSubmit={handleSubmit} className="bg-white rounded p-8">
+        {isLoading && 'Loading...'}
+        {error && <pre>{JSON.stringify(error)}</pre>}
         <Input id="username" label="Username" type="text" placeholder="Username" onChange={setUsername} />
         <Input id="password" label="Password" type="password" placeholder="Password" onChange={setPassword} />
         <Button>Log in</Button>

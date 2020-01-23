@@ -6,5 +6,9 @@ import { Dashboard, Login } from './'
 export const App: FC = () => {
   const [user, setUser] = useState<User>()
 
-  return <Router>{user ? <Dashboard path="/" user={user} /> : <Login path="/" setUser={setUser} />}</Router>
+  return (
+    <Router>
+      {user ? <Dashboard path="/" setUser={setUser} user={user} /> : <Login path="/" setUser={setUser} />}
+    </Router>
+  )
 }
