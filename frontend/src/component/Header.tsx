@@ -1,15 +1,17 @@
 import React, { FC, useState } from 'react'
-import { Overlay, NavLink } from './'
+import { Link } from '@reach/router'
+import { User } from '../api'
+import { AccountDropdown, Overlay } from './'
 import { ReactComponent as Menu } from '../image/menu.svg'
 import { ReactComponent as Close } from '../image/close.svg'
 import avatar from '../image/rhesusminus.jpg'
 
-export const Header: FC<HeaderProps> = () => {
+export const Header: FC<HeaderProps> = props => {
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [showAvatarMenu, setAvatarMenu] = useState<boolean>(false)
 
   return (
-    <header className="bg-gray-800 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
+    <header className="bg-red-800 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
       <div className="flex items-center justify-between px-4 py-3 sm:p-0">
         <h1 className="text-white text-xl font-bold">acme app</h1>
         <div className="sm:hidden">
@@ -22,31 +24,35 @@ export const Header: FC<HeaderProps> = () => {
           </button>
         </div>
       </div>
-      <nav className={`px-2 pt-2 pb-4 sm:flex sm:p-0 ${showMenu ? 'block' : 'hidden'}`}>
-        <NavLink to="testi">Dashboard</NavLink>
-        <NavLink to="testi" className="mt-1 sm:mt-0 sm:ml-2">
-          Messages
-        </NavLink>
-        <NavLink to="testi" className="mt-1 sm:mt-0 sm:ml-2">
-          Something
-        </NavLink>
-        <div className="bg-gray-800 relative ml-6">
-          <button
-            className="relative z-10 block h-10 w-10 rounded-full overflow-hidden border-2 focus:outline-none focus:border-pink-400 hover:border-pink-400"
-            onClick={() => setAvatarMenu(!showAvatarMenu)}
+      <nav className={`sm:block ${showMenu ? 'block' : 'hidden'}`}>
+        <div className="px-2 pt-2 pb-4 sm:flex sm:p-0">
+          <Link to="/" className="block px-2 py-1 text-white font-semibold rounded hover:bg-red-700">
+            Dashboard
+          </Link>
+          <Link
+            to="testi"
+            className="block mt-1 sm:mt-0 sm:ml-2 px-2 py-1 text-white font-semibold rounded hover:bg-red-700"
           >
-            <img className="h-full w-full object-cover" src={avatar} alt="Your avatar" />
-          </button>
-          {showAvatarMenu && <Overlay onClick={() => setAvatarMenu(false)} tabIndex={-1} />}
-          <div
-            className={`mt-2 py-2 w-48 bg-white rounded-lg shadow-xl absolute right-0 ${
-              showAvatarMenu ? 'block' : 'hidden'
-            }`}
+            Messages
+          </Link>
+          <Link
+            to="testi"
+            className="block mt-1 sm:mt-0 sm:ml-2 px-2 py-1 text-white font-semibold rounded hover:bg-red-700"
           >
-            <a className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white" href="#">
+            Something
+          </Link>
+          <AccountDropdown className="hidden sm:block" />
+        </div>
+        <div className="px-4 py-5 border-t border-red-700 sm:hidden">
+          <div className="flex items-center">
+            <img className="h-8 w-8 border-2 rounded-full object-cover" src={avatar} alt="Your avatar" />
+            <span className="ml-3 text-white font-semibold">{props.user.username}</span>
+          </div>
+          <div className="mt-4">
+            <a className="mt-2 block text-gray-400 hover:text-white" href="#">
               Account settings
             </a>
-            <a className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white" href="#">
+            <a className="mt-2 block text-gray-400 hover:text-white" href="#">
               Log out
             </a>
           </div>
@@ -57,5 +63,6 @@ export const Header: FC<HeaderProps> = () => {
 }
 
 type HeaderProps = {
+  user: User
   setUser: React.Dispatch<any>
 }

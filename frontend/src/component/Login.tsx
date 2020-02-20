@@ -1,6 +1,6 @@
 import React, { useState, FC, FormEvent } from 'react'
 import { RouteComponentProps } from '@reach/router'
-import { login } from '../api'
+import { login2 } from '../api'
 import { Button, Input } from './'
 
 export const Login: FC<LoginProps> = props => {
@@ -12,18 +12,14 @@ export const Login: FC<LoginProps> = props => {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setLoading(true)
-    login({ username, password })
+    login2({ username, password })
       .then(res => {
         setLoading(false)
-        props.setUser(res.data)
-      })
-      .catch(err => {
-        setLoading(false)
-        setError(err)
+        props.setUser(res)
       })
   }
 
-  // props.setUser({ userId: 1, username: 'koira' })
+  props.setUser({ userId: 1, username: 'Rhesus Miinus' })
 
   return (
     <div className="bg-red-800 min-h-screen p-2 flex flex-col justify-center items-center">

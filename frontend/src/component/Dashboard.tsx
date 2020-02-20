@@ -5,7 +5,7 @@ import { Header } from './'
 
 export const Dashboard: FC<DashboardProps> = props => (
   <div>
-    <Header setUser={props.setUser} />
+    <Header setUser={props.setUser} user={props.user} />
   </div>
 )
 
