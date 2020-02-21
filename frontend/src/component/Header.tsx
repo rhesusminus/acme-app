@@ -1,14 +1,13 @@
 import React, { FC, useState } from 'react'
 import { Link } from '@reach/router'
 import { User } from '../api'
-import { AccountDropdown, Overlay } from './'
+import { AccountDropdown } from './'
 import { ReactComponent as Menu } from '../image/menu.svg'
 import { ReactComponent as Close } from '../image/close.svg'
 import avatar from '../image/rhesusminus.jpg'
 
 export const Header: FC<HeaderProps> = props => {
   const [showMenu, setShowMenu] = useState<boolean>(false)
-  const [showAvatarMenu, setAvatarMenu] = useState<boolean>(false)
 
   return (
     <header className="bg-red-800 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
