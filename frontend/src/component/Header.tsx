@@ -40,7 +40,7 @@ export const Header: FC<HeaderProps> = props => {
           >
             Something
           </Link>
-          <AccountDropdown className="hidden sm:block" />
+          <AccountDropdown className="ml-6 hidden sm:block" />
         </div>
         <div className="px-4 py-5 border-t border-red-700 sm:hidden">
           <div className="flex items-center">

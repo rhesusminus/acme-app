@@ -6,7 +6,7 @@ export const AccountDropdown: FC<ComponentProps<'div'>> = props => {
   const [showAvatarMenu, setAvatarMenu] = useState<boolean>(false)
 
   return (
-    <div className={`relative ml-6 ${props.className}`}>
+    <div className={`relative ${props.className}`}>
       <button
         className="z-10 block h-10 w-10 rounded-full overflow-hidden border-2 focus:outline-none focus:border-red-700 hover:border-red-700"
         onClick={() => setAvatarMenu(!showAvatarMenu)}
