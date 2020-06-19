@@ -7,13 +7,19 @@ const redisStore = require('connect-redis')(session)
 const logger = require('morgan')
 const uuid = require('uuid/v4')
 const cors = require('cors')
+const graphqlHTTP = require('express-graphql')
+const graphqlSchema = require('./graphqlSchema')
 
-const indexRouter = require('./routes/index')
-const apiRouter = require('./routes/api')
-const userRouter = require('./routes/user')
+const sessionRouter = require('./routes/session')
 
 const app = express()
 app.disable('x-powered-by')
+
+const root = {
+  hello: () => {
+    return 'Hello world!'
+  }
+}
 
 app.use(logger('dev'))
 app.use(express.json())
@@ -27,9 +33,8 @@ app.use(
     saveUninitialized: false,
     resave: false,
     store: new redisStore({
-      host: 'localhost',
       port: process.env.REDIS_PORT,
-      client: redis.createClient(),
+      client: redis.createClient({ host: process.env.REDIS_HOST }),
       ttl: 86400
     }),
     cookie: {
@@ -39,10 +44,16 @@ app.use(
     }
   })
 )
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: root,
+    graphiql: true
+  })
+)
 
-app.use('/', indexRouter)
-app.use('/api', apiRouter)
-app.use('/user', userRouter)
+app.use('/api/session', sessionRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

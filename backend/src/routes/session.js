@@ -12,7 +12,13 @@ const user = {
 }
 
 router.get('', function(req, res) {
-  res.send(req.session.user)
+  if (req.session.user) {
+    res.send(req.session.user)
+
+    return
+  }
+
+  res.send('no session')
 })
 
 router.post('', async function(req, res, next) {
@@ -29,7 +35,7 @@ router.post('', async function(req, res, next) {
       return
     }
 
-    throw new Error('Invalid username or password')
+    res.status(401).send('invalid username or password')
   } catch (err) {
     res.status(401).send(parseError(err))
   }
